@@ -1,0 +1,17 @@
+{
+  "name": "bangla-compiler-backend",
+  "version": "1.0.0",
+  "description": "Backend server for Bangla Programming Language Compiler",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js"
+  },
+  "keywords": ["compiler", "bangla", "bengali", "flex", "bison"],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {},
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  }
+}

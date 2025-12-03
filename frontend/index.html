@@ -1,0 +1,131 @@
+<! DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bangla Programming Language Compiler</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <h1 class="title">Bangla Programming Language Compiler</h1>
+            <p class="subtitle">Compiler Design Project with Flex & Bison Backend</p>
+        </header>
+
+        <!-- Stats Bar -->
+        <div class="stats-container">
+            <div class="stat-card">
+                <div class="stat-label">Keywords</div>
+                <div class="stat-value stat-keywords" id="keywords">0</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Identifiers</div>
+                <div class="stat-value stat-identifiers" id="identifiers">0</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Lines of Code</div>
+                <div class="stat-value stat-lines" id="lines">0</div>
+            </div>
+        </div>
+
+        <!-- Server Status Notice -->
+        <div class="notice">
+            <svg class="notice-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <div>
+                <div class="notice-title" id="connection-status">Backend Status: Checking...</div>
+                <div class="notice-text">
+                    Server running on <code>http://localhost:5000</code>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content Grid -->
+        <div class="main-grid">
+            <!-- Source Code Editor -->
+            <div class="panel">
+                <div class="panel-header">
+                    <div class="panel-title">
+                        <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+                        </svg>
+                        <span>Source Code</span>
+                    </div>
+                    <button id="compileBtn" class="btn-compile">
+                        <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14. 752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        <span id="compileBtnText">Compile</span>
+                    </button>
+                </div>
+                <textarea id="sourceCode" class="code-editor" spellcheck="false" placeholder="Write your Bangla code here..."></textarea>
+            </div>
+
+            <!-- Output Section -->
+            <div class="panel">
+                <div class="panel-header">
+                    <div class="tabs">
+                        <button class="tab" data-tab="output">
+                            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                            </svg>
+                            Output
+                        </button>
+                        <button class="tab tab-active" data-tab="assembly">Assembly Code</button>
+                    </div>
+                </div>
+                <div class="output-container">
+                    <pre id="textOutput" class="output-content output-text" style="display: none;">// Program output will appear here...</pre>
+                    <pre id="assemblyOutput" class="output-content output-assembly">// Assembly code will appear here after compilation...</pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- Language Reference -->
+        <div class="reference-panel">
+            <h2 class="reference-title">Language Reference</h2>
+            <div class="reference-grid">
+                <div class="reference-section">
+                    <div class="reference-subtitle">Keywords:</div>
+                    <ul class="reference-list">
+                        <li><code class="code-keyword">dhoro</code> - Variable declaration</li>
+                        <li><code class="code-keyword">lekho</code> - Print statement</li>
+                        <li><code class="code-keyword">jodi</code> - If condition</li>
+                        <li><code class="code-keyword">jodi na</code> - Else statement</li>
+                        <li><code class="code-keyword">hoite</code> - For loop</li>
+                    </ul>
+                </div>
+                <div class="reference-section">
+                    <div class="reference-subtitle">Operators:</div>
+                    <ul class="reference-list">
+                        <li><code class="code-operator">+</code> - Addition</li>
+                        <li><code class="code-operator">-</code> - Subtraction</li>
+                        <li><code class="code-operator">*</code> - Multiplication</li>
+                        <li><code class="code-operator">/</code> - Division</li>
+                        <li><code class="code-operator">&gt;, &lt;, &gt;=, &lt;=, ==</code> - Comparison</li>
+                    </ul>
+                </div>
+                <div class="reference-section">
+                    <div class="reference-subtitle">Example Code:</div>
+                    <ul class="reference-list">
+                        <li><code>dhoro x = 10;</code></li>
+                        <li><code>lekho x + 5;</code></li>
+                        <li><code>jodi (x &gt; 5) { lekho x; }</code></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>Bangla Compiler © 2025 | Built with Flex, Bison & Node.js | Press Ctrl+Enter to compile</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

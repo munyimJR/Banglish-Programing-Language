@@ -1,0 +1,36 @@
+# Compiled binaries
+backend/compiler.exe
+backend/*.exe
+
+# Generated C files from Flex/Bison
+backend/lex.yy.c
+backend/parser.tab.c
+backend/parser.tab.h
+
+# Generated assembly output
+backend/output.asm
+backend/*.asm
+
+# Temporary files
+backend/temp/
+backend/error
+
+# Node modules
+node_modules/
+backend/node_modules/
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Logs
+*.log
+npm-debug.log*
