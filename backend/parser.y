@@ -84,7 +84,6 @@ declaration:
                set_value($2, $4);
                fprintf(output_file, "    ; dhoro %s = %d\n", $2, $4);
                fprintf(output_file, "    mov dword [%s], %d\n", $2, $4);
-               printf("Declared: %s = %d\n", $2, $4);
                free($2);
            }
            ;
@@ -95,14 +94,14 @@ print_statement:
                    fprintf(output_file, "    ; lekho %s\n", $2);
                    fprintf(output_file, "    mov eax, [%s]\n", $2);
                    fprintf(output_file, "    call print_num\n");
-                   printf("Print: %s = %d\n", $2, val);
+                   printf("%d\n", val);
                    free($2);
                }
                | LEKHO expression ';' {
                    fprintf(output_file, "    ; lekho %d\n", $2);
                    fprintf(output_file, "    mov eax, %d\n", $2);
                    fprintf(output_file, "    call print_num\n");
-                   printf("Print: %d\n", $2);
+                   printf("%d\n", $2);
                }
                ;
 
@@ -115,7 +114,6 @@ if_statement:
                 fprintf(output_file, "    cmp eax, %d\n", $5);
                 fprintf(output_file, "    jle L%d\n", end_label);
                 fprintf(output_file, "L%d:\n", end_label);
-                printf("If: %s (%d) > %d = %s\n", $3, val, $5, val > $5 ? "true" : "false");
                 free($3);
             }
             | JODI '(' IDENTIFIER '<' expression ')' '{' statement_list '}' {
@@ -126,7 +124,6 @@ if_statement:
                 fprintf(output_file, "    cmp eax, %d\n", $5);
                 fprintf(output_file, "    jge L%d\n", end_label);
                 fprintf(output_file, "L%d:\n", end_label);
-                printf("If: %s (%d) < %d = %s\n", $3, val, $5, val < $5 ?  "true" : "false");
                 free($3);
             }
             | JODI '(' IDENTIFIER '>' expression ')' '{' statement_list '}' JODI_NA '{' statement_list '}' {
@@ -140,7 +137,6 @@ if_statement:
                 fprintf(output_file, "    jmp L%d\n", end_label);
                 fprintf(output_file, "L%d:\n", else_label);
                 fprintf(output_file, "L%d:\n", end_label);
-                printf("If-Else: %s (%d) > %d\n", $3, val, $5);
                 free($3);
             }
             | JODI '(' IDENTIFIER '<' expression ')' '{' statement_list '}' JODI_NA '{' statement_list '}' {
@@ -154,7 +150,6 @@ if_statement:
                 fprintf(output_file, "    jmp L%d\n", end_label);
                 fprintf(output_file, "L%d:\n", else_label);
                 fprintf(output_file, "L%d:\n", end_label);
-                printf("If-Else: %s (%d) < %d\n", $3, val, $5);
                 free($3);
             }
             ;
@@ -178,8 +173,6 @@ for_loop:
             fprintf(output_file, "    mov [%s], eax\n", $12);
             fprintf(output_file, "    jmp L%d\n", loop_start);
             fprintf(output_file, "L%d:\n", loop_end);
-            
-            printf("Loop: %s from %d to %d\n", $4, $6, $10);
             
             free($4);
             free($8);
@@ -229,9 +222,6 @@ int main() {
     }
     
     output_file = temp_file;
-    
-    printf("=== Bangla Compiler ===\n");
-    printf("Enter code (Ctrl+Z then Enter to finish):\n\n");
     
     int result = yyparse();
     
@@ -292,10 +282,7 @@ int main() {
     fflush(output_file);
     fclose(output_file);
     
-    printf("\n=== COMPILATION SUMMARY ===\n");
-    printf("KEYWORDS: %d\n", keyword_count);
-    printf("IDENTIFIERS: %d\n", identifier_count);
-    printf("Assembly: output.asm\n");
+    printf("\n✓ Compilation successful!\n");
     
     return result;
 }

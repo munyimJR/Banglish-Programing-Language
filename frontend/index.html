@@ -69,18 +69,18 @@
             <div class="panel">
                 <div class="panel-header">
                     <div class="tabs">
-                        <button class="tab" data-tab="output">
+                        <button class="tab tab-active" data-tab="output">
                             <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                             </svg>
                             Output
                         </button>
-                        <button class="tab tab-active" data-tab="assembly">Assembly Code</button>
+                        <button class="tab" data-tab="assembly">Assembly Code</button>
                     </div>
                 </div>
                 <div class="output-container">
-                    <pre id="textOutput" class="output-content output-text" style="display: none;">// Program output will appear here...</pre>
-                    <pre id="assemblyOutput" class="output-content output-assembly">// Assembly code will appear here after compilation...</pre>
+                    <pre id="textOutput" class="output-content output-text">// Program output will appear here...</pre>
+                    <pre id="assemblyOutput" class="output-content output-assembly" style="display: none;">// Assembly code will appear here after compilation...</pre>
                 </div>
             </div>
         </div>
