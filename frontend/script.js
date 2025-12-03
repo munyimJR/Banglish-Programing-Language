@@ -189,7 +189,12 @@ async function compile() {
             
             // Update outputs
             const assembly = result.assembly || '// No assembly code generated';
-            const output = result.output || '// No output generated';
+            let output = result.output || '// No output generated';
+            
+            // Remove KEYWORDS and IDENTIFIERS lines from output (they're shown in stats)
+            output = output.replace(/KEYWORDS:\s*\d+\n?/gi, '');
+            output = output.replace(/IDENTIFIERS:\s*\d+\n?/gi, '');
+            output = output.trim();
             
             console.log('[COMPILE] Assembly code length:', assembly.length);
             console.log('[COMPILE] Output length:', output.length);

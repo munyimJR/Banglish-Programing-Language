@@ -283,6 +283,8 @@ int main() {
     fclose(output_file);
     
     printf("\n✓ Compilation successful!\n");
+    printf("KEYWORDS: %d\n", keyword_count);
+    printf("IDENTIFIERS: %d\n", identifier_count);
     
     return result;
 }
