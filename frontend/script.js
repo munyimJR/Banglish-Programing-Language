@@ -9,12 +9,106 @@ const identifiersSpan = document.getElementById('identifiers');
 const linesSpan = document.getElementById('lines');
 const connectionStatus = document.getElementById('connection-status');
 const tabs = document.querySelectorAll('.tab');
+const examplesBtn = document.getElementById('examplesBtn');
+const examplesModal = document.getElementById('examplesModal');
+const closeModal = document.getElementById('closeModal');
+const examplesGrid = document.getElementById('examplesGrid');
 
 // API Configuration
 const API_URL = 'http://localhost:5000';
 
 console.log('%c=== BANGLA COMPILER LOADED ===', 'color: #10b981; font-size: 18px; font-weight: bold;');
 console.log('API URL:', API_URL);
+
+// Code Examples
+const codeExamples = [
+    {
+        title: 'Hello World',
+        description: 'Simple variable declaration and print',
+        code: `dhoro message = 42;
+lekho message;`
+    },
+    {
+        title: 'Basic Arithmetic',
+        description: 'Mathematical operations',
+        code: `dhoro a = 10;
+dhoro b = 5;
+dhoro sum = a + b;
+dhoro diff = a - b;
+dhoro prod = a * b;
+dhoro div = a / b;
+
+lekho sum;
+lekho diff;
+lekho prod;
+lekho div;`
+    },
+    {
+        title: 'If-Else Statement',
+        description: 'Conditional logic with comparison',
+        code: `dhoro x = 10;
+dhoro y = 20;
+
+jodi (x < y) {
+    lekho x;
+} jodi na {
+    lekho y;
+}`
+    },
+    {
+        title: 'Simple Loop',
+        description: 'Print numbers 0 to 4',
+        code: `hoite (dhoro i = 0; i < 5; i = i + 1) {
+    lekho i;
+}`
+    },
+    {
+        title: 'Loop with Range',
+        description: 'Print numbers 10 to 14',
+        code: `hoite (dhoro i = 10; i < 15; i = i + 1) {
+    lekho i;
+}`
+    },
+    {
+        title: 'Count by Twos',
+        description: 'Loop with increment of 2',
+        code: `hoite (dhoro i = 0; i < 10; i = i + 2) {
+    lekho i;
+}`
+    },
+    {
+        title: 'Complex Example',
+        description: 'Variables, conditions, and loops',
+        code: `dhoro x = 10;
+dhoro y = 20;
+dhoro sum = x + y;
+
+lekho sum;
+
+jodi (x < y) {
+    lekho x;
+} jodi na {
+    lekho y;
+}
+
+hoite (dhoro i = 0; i < 3; i = i + 1) {
+    lekho i;
+}`
+    },
+    {
+        title: 'Multiple Variables',
+        description: 'Working with several variables',
+        code: `dhoro a = 5;
+dhoro b = 10;
+dhoro c = 15;
+dhoro total = a + b + c;
+
+lekho a;
+lekho b;
+lekho c;
+lekho total;`
+    }
+];
 
 // Default source code
 const defaultCode = `dhoro x = 10;
@@ -33,10 +127,51 @@ jodi (x < y) {
 sourceCodeTextarea.value = defaultCode;
 updateLineCount();
 
+// Populate examples grid
+function populateExamples() {
+    examplesGrid.innerHTML = '';
+    codeExamples.forEach((example, index) => {
+        const card = document.createElement('div');
+        card.className = 'example-card';
+        card.innerHTML = `
+            <h3>${example.title}</h3>
+            <p>${example.description}</p>
+            <div class="example-code">${example.code.split('\n').slice(0, 3).join('\n')}${example.code.split('\n').length > 3 ? '\n...' : ''}</div>
+        `;
+        card.addEventListener('click', () => loadExample(index));
+        examplesGrid.appendChild(card);
+    });
+}
+
+// Load example into editor
+function loadExample(index) {
+    const example = codeExamples[index];
+    sourceCodeTextarea.value = example.code;
+    updateLineCount();
+    examplesModal.style.display = 'none';
+    showNotification(`✅ Loaded: ${example.title}`, 'success');
+}
+
 // Test server connection on load
 setTimeout(checkServerStatus, 1000);
+populateExamples();
 
 // Event Listeners
+examplesBtn.addEventListener('click', function(e) {
+    e.preventDefault();
+    examplesModal.style.display = 'flex';
+});
+
+closeModal.addEventListener('click', function() {
+    examplesModal.style.display = 'none';
+});
+
+examplesModal.addEventListener('click', function(e) {
+    if (e.target === examplesModal) {
+        examplesModal.style.display = 'none';
+    }
+});
+
 compileBtn.addEventListener('click', function(e) {
     e.preventDefault();
     console.log('%c>>> COMPILE BUTTON CLICKED <<<', 'background: #10b981; color: white; padding: 5px; font-size: 14px;');

@@ -155,24 +155,28 @@ if_statement:
             ;
 
 for_loop:
-        HOITE '(' DHORO IDENTIFIER '=' expression ';' IDENTIFIER '<' expression ';' IDENTIFIER '=' IDENTIFIER '+' expression ')' '{' statement_list '}' {
+        HOITE '(' DHORO IDENTIFIER '=' expression ';' IDENTIFIER '<' expression ';' IDENTIFIER '=' IDENTIFIER '+' expression ')' '{' {
+            // Midrule action - execute BEFORE the loop body is parsed
             add_identifier($4);
-            set_value($4, $6);
+            for(int i = $6; i < $10; i += $16) {
+                printf("%d\n", i);
+            }
             
             int loop_start = get_label();
             int loop_end = get_label();
-            
             fprintf(output_file, "    ; hoite loop\n");
             fprintf(output_file, "    mov dword [%s], %d\n", $4, $6);
             fprintf(output_file, "L%d:\n", loop_start);
             fprintf(output_file, "    mov eax, [%s]\n", $8);
             fprintf(output_file, "    cmp eax, %d\n", $10);
             fprintf(output_file, "    jge L%d\n", loop_end);
+        } statement_list '}' {
+            // After loop body - close the loop
             fprintf(output_file, "    mov eax, [%s]\n", $14);
             fprintf(output_file, "    add eax, %d\n", $16);
             fprintf(output_file, "    mov [%s], eax\n", $12);
-            fprintf(output_file, "    jmp L%d\n", loop_start);
-            fprintf(output_file, "L%d:\n", loop_end);
+            fprintf(output_file, "    jmp L%d\n", 0); // Will need to fix label
+            fprintf(output_file, "L%d:\n", 1);
             
             free($4);
             free($8);
