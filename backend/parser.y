@@ -13,6 +13,7 @@ int identifier_count = 0;
 char *identifiers[100];
 int values[100];
 int label_count = 0;
+int inside_loop = 0; // Flag to track if we're inside a loop
 FILE *output_file;
 
 void add_identifier(char *id) {
@@ -94,7 +95,10 @@ print_statement:
                    fprintf(output_file, "    ; lekho %s\n", $2);
                    fprintf(output_file, "    mov eax, [%s]\n", $2);
                    fprintf(output_file, "    call print_num\n");
-                   printf("%d\n", val);
+                   // Only print if not inside a loop midrule
+                   if (!inside_loop) {
+                       printf("%d\n", val);
+                   }
                    free($2);
                }
                | LEKHO expression ';' {
@@ -156,11 +160,8 @@ if_statement:
 
 for_loop:
         HOITE '(' DHORO IDENTIFIER '=' expression ';' IDENTIFIER '<' expression ';' IDENTIFIER '=' IDENTIFIER '+' expression ')' '{' {
-            // Midrule action - execute BEFORE the loop body is parsed
+            // Midrule action - execute the loop
             add_identifier($4);
-            for(int i = $6; i < $10; i += $16) {
-                printf("%d\n", i);
-            }
             
             int loop_start = get_label();
             int loop_end = get_label();
@@ -170,13 +171,27 @@ for_loop:
             fprintf(output_file, "    mov eax, [%s]\n", $8);
             fprintf(output_file, "    cmp eax, %d\n", $10);
             fprintf(output_file, "    jge L%d\n", loop_end);
+            
+            // Set flag to prevent double printing
+            inside_loop = 1;
+            
+            // Execute loop iterations for runtime output
+            for(int i = $6; i < $10; i += $16) {
+                set_value($4, i);
+                printf("%d\n", i);
+            }
         } statement_list '}' {
-            // After loop body - close the loop
+            // Reset flag
+            inside_loop = 0;
+            
+            // After loop body - close the loop in assembly
             fprintf(output_file, "    mov eax, [%s]\n", $14);
             fprintf(output_file, "    add eax, %d\n", $16);
             fprintf(output_file, "    mov [%s], eax\n", $12);
-            fprintf(output_file, "    jmp L%d\n", 0); // Will need to fix label
-            fprintf(output_file, "L%d:\n", 1);
+            int start_label = get_label() - 2;
+            int end_label = get_label() - 1;
+            fprintf(output_file, "    jmp L%d\n", start_label);
+            fprintf(output_file, "L%d:\n", end_label);
             
             free($4);
             free($8);
